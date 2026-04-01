@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LocalServe AI - Intelligent Service Marketplace</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-dim": "#005a53",
+              "secondary-dim": "#a00047",
+              "surface-bright": "#f5f6f8",
+              "on-error": "#ffefef",
+              "on-background": "#2c2f31",
+              "on-tertiary": "#bffff5",
+              "surface-dim": "#d1d5d8",
+              "on-primary-fixed": "#000005",
+              "primary-container": "#929bfa",
+              "on-tertiary-fixed-variant": "#00655d",
+              "surface-container-lowest": "#ffffff",
+              "tertiary": "#00675f",
+              "outline": "#757779",
+              "outline-variant": "#abadaf",
+              "on-secondary-container": "#910040",
+              "tertiary-container": "#81f3e5",
+              "on-secondary": "#ffeff0",
+              "surface-container-high": "#e0e3e5",
+              "on-error-container": "#510017",
+              "primary": "#4953ac",
+              "on-primary-fixed-variant": "#18217d",
+              "surface-container": "#e6e8eb",
+              "on-tertiary-fixed": "#004640",
+              "tertiary-fixed": "#81f3e5",
+              "secondary": "#b40953",
+              "on-secondary-fixed": "#6d002e",
+              "primary-dim": "#3d469f",
+              "primary-fixed": "#929bfa",
+              "inverse-surface": "#0c0f10",
+              "surface-container-low": "#eff1f3",
+              "inverse-on-surface": "#9b9d9f",
+              "secondary-fixed": "#ffc2ce",
+              "on-surface-variant": "#595c5e",
+              "primary-fixed-dim": "#858eec",
+              "secondary-fixed-dim": "#ffadbf",
+              "error-dim": "#a70138",
+              "surface-tint": "#4953ac",
+              "on-primary-container": "#0b1574",
+              "on-primary": "#f3f1ff",
+              "secondary-container": "#ffc2ce",
+              "on-secondary-fixed-variant": "#a20048",
+              "surface": "#f5f6f8",
+              "on-tertiary-container": "#005a53",
+              "on-surface": "#2c2f31",
+              "error-container": "#f74b6d",
+              "inverse-primary": "#929bfa",
+              "surface-container-highest": "#dadde0",
+              "surface-variant": "#dadde0",
+              "error": "#b41340",
+              "background": "#f5f6f8",
+              "tertiary-fixed-dim": "#72e4d7"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        line-height: 1;
+      }
+      body {
+        background-color: #f5f6f8;
+      }
+    </style>
+</head>
+<body class="font-body text-on-surface">
+<!-- Navbar -->
+<header class="fixed top-0 w-full z-50 bg-[#f5f6f8] dark:bg-slate-950">
+<nav class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-bold text-[#4953ac] dark:text-[#7983d9] tracking-tight font-headline">
+                LocalServe AI
+            </div>
+<div class="hidden md:flex items-center space-x-8 font-['Plus_Jakarta_Sans'] font-medium tracking-tight">
+<a class="text-[#4953ac] dark:text-[#7983d9] font-bold border-b-2 border-[#4953ac] pb-1 transition-colors" href="#">Services</a>
+<a class="text-[#595c5e] dark:text-slate-400 hover:text-[#4953ac] dark:hover:text-[#7983d9] transition-colors" href="#">About Us</a>
+<a class="text-[#595c5e] dark:text-slate-400 hover:text-[#4953ac] dark:hover:text-[#7983d9] transition-colors" href="#">Contact</a>
+</div>
+<button class="bg-[#4953ac] text-[#f3f1ff] px-6 py-2.5 rounded-full font-semibold hover:bg-[#3d469f] transition-all transform hover:scale-95 duration-200">
+                Join Now
+            </button>
+</nav>
+</header>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-8">
+<h1 class="text-5xl lg:text-6xl font-headline font-extrabold text-on-surface tracking-tight leading-tight">
+                    Find Trusted Local <span class="text-primary">Experts</span> Near You
+                </h1>
+<p class="text-lg text-on-surface-variant max-w-lg leading-relaxed">
+                    Search, compare, and book verified service providers powered by smart AI recommendations. Experience the future of local services.
+                </p>
+<!-- Search Bar -->
+<div class="bg-surface-container-lowest p-2 rounded-full shadow-xl flex items-center gap-2 max-w-2xl group border border-outline-variant/10">
+<div class="flex items-center px-4 gap-2 border-r border-outline-variant/20">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<select class="bg-transparent border-none focus:ring-0 text-on-surface font-medium cursor-pointer">
+<option>New York, NY</option>
+<option>London, UK</option>
+<option>Sydney, AU</option>
+</select>
+</div>
+<div class="flex-grow px-2 flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder-on-surface-variant/60" placeholder="What service do you need?" type="text"/>
+</div>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-bold hover:bg-primary-dim transition-all">
+                        Search
+                    </button>
+</div>
+<div class="flex items-center gap-4 text-sm font-medium text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">verified</span> Verified Pros</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span> AI-Powered</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">shield</span> Secure Booking</span>
+</div>
+</div>
+<div class="relative">
+<div class="rounded-lg overflow-hidden bg-surface-container-high aspect-square lg:aspect-[4/5] relative shadow-2xl">
+<img class="w-full h-full object-cover" data-alt="professional electrician with modern tools working on a clean electrical panel in a well-lit residential interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW9QQjUZhxBtRHjHSlD2F53T5ZVg6ZUKtFUPe5AAropbTMMzVFgObO32JhawQ_tRAhqHb7ph_y9bQs6ySH4mAtxs_KNJL3NuwshURxfhkAYGmHMQMdGNuAij8RqCHDjt5bVfvWtUXaxquMafkoD1MXvSTD73nm1WCABEK8H3ZhoJKYsIY6ScK5H2SLbFwTxY2UZ--8RCXjDpeZjYSZSopLfqtmK8zw8cAakX5_8VYSqWKBlUTGNl-r1hxjaHYbLDhwBAsRMBDk4KaI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent"></div>
+</div>
+<!-- Floating Featured Cards -->
+<div class="absolute -bottom-8 -left-12 flex gap-4 w-full overflow-x-auto pb-4 scrollbar-hide px-12">
+<div class="min-w-[240px] bg-surface-bright/90 backdrop-blur-xl p-4 rounded-lg shadow-lg border border-white/20 flex items-center gap-4">
+<div class="h-12 w-12 rounded-full bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-container">electric_bolt</span>
+</div>
+<div>
+<p class="text-xs font-bold text-tertiary uppercase tracking-wider">AI Recommended</p>
+<h4 class="font-bold text-on-surface">Top Rated Electricians</h4>
+<div class="flex items-center gap-1 text-sm font-semibold">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.8</span>
+</div>
+</div>
+</div>
+<div class="min-w-[240px] bg-surface-bright/90 backdrop-blur-xl p-4 rounded-lg shadow-lg border border-white/20 flex items-center gap-4">
+<div class="h-12 w-12 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">cleaning_services</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary uppercase tracking-wider">Most Popular</p>
+<h4 class="font-bold text-on-surface">Home Cleaning</h4>
+<div class="flex items-center gap-1 text-sm font-semibold">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Services Grid -->
+<section class="bg-surface-container-low py-24">
+<div class="max-w-7xl mx-auto px-8">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-3xl font-headline font-extrabold text-on-surface mb-2">Explore Services Near You</h2>
+<p class="text-on-surface-variant">Quality professionals for every need, just a click away.</p>
+</div>
+<a class="text-primary font-bold hover:underline flex items-center gap-1" href="#">
+                        View All <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Service 1 -->
+<div class="group bg-surface-container-lowest p-8 rounded-lg transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+<div class="h-14 w-14 rounded-md bg-primary/10 text-primary flex items-center justify-center mb-6 transition-colors group-hover:bg-primary group-hover:text-on-primary">
+<span class="material-symbols-outlined text-3xl">electric_bolt</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Electrician</h3>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Safety-first electrical repairs and installations for your smart home.</p>
+<span class="text-primary font-bold text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Book Now <span class="material-symbols-outlined text-sm">chevron_right</span>
+</span>
+</div>
+<!-- Service 2 -->
+<div class="group bg-surface-container-lowest p-8 rounded-lg transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+<div class="h-14 w-14 rounded-md bg-blue-100 text-blue-600 flex items-center justify-center mb-6 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+<span class="material-symbols-outlined text-3xl">plumbing</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Plumbing</h3>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">From leak fixes to complete pipe overhauls with verified expertise.</p>
+<span class="text-primary font-bold text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Book Now <span class="material-symbols-outlined text-sm">chevron_right</span>
+</span>
+</div>
+<!-- Service 3 -->
+<div class="group bg-surface-container-lowest p-8 rounded-lg transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+<div class="h-14 w-14 rounded-md bg-tertiary-container/30 text-tertiary flex items-center justify-center mb-6 transition-colors group-hover:bg-tertiary group-hover:text-on-tertiary">
+<span class="material-symbols-outlined text-3xl">cleaning_services</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Home Cleaning</h3>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Eco-friendly deep cleaning for a healthier, happier living space.</p>
+<span class="text-primary font-bold text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Book Now <span class="material-symbols-outlined text-sm">chevron_right</span>
+</span>
+</div>
+<!-- Service 4 -->
+<div class="group bg-surface-container-lowest p-8 rounded-lg transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+<div class="h-14 w-14 rounded-md bg-secondary-container/30 text-secondary flex items-center justify-center mb-6 transition-colors group-hover:bg-secondary group-hover:text-on-secondary">
+<span class="material-symbols-outlined text-3xl">school</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Tutoring</h3>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Personalized 1-on-1 learning with experts in various subjects.</p>
+<span class="text-primary font-bold text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Book Now <span class="material-symbols-outlined text-sm">chevron_right</span>
+</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="max-w-7xl mx-auto px-8 py-24 grid lg:grid-cols-2 gap-20 items-center">
+<div class="order-2 lg:order-1 grid grid-cols-2 gap-6">
+<div class="bg-[#ff9a62] p-8 rounded-lg text-white space-y-4 shadow-lg transform rotate-2">
+<span class="material-symbols-outlined text-4xl">schedule</span>
+<h3 class="text-4xl font-extrabold">24/7</h3>
+<p class="font-medium opacity-90">Instant Booking Support</p>
+</div>
+<div class="bg-[#929bfa] p-8 rounded-lg text-on-primary-container space-y-4 shadow-lg transform -rotate-1 translate-y-8">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+<h3 class="text-4xl font-extrabold">2k+</h3>
+<p class="font-medium opacity-90">Services Completed</p>
+</div>
+<div class="bg-[#81f3e5] p-8 rounded-lg text-on-tertiary-container space-y-4 shadow-lg transform -rotate-2">
+<span class="material-symbols-outlined text-4xl">auto_awesome</span>
+<h3 class="text-4xl font-extrabold">98%</h3>
+<p class="font-medium opacity-90">AI Match Accuracy</p>
+</div>
+<div class="bg-[#ffc2ce] p-8 rounded-lg text-on-secondary-container space-y-4 shadow-lg transform rotate-1 translate-y-8">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<h3 class="text-4xl font-extrabold">4.9</h3>
+<p class="font-medium opacity-90">User Trust Rating</p>
+</div>
+</div>
+<div class="order-1 lg:order-2 space-y-8">
+<div class="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider">
+                    Trust &amp; Reliability
+                </div>
+<h2 class="text-4xl lg:text-5xl font-headline font-extrabold text-on-surface leading-tight">
+                    The Smartest Way to Book Local Services
+                </h2>
+<p class="text-lg text-on-surface-variant leading-relaxed">
+                    We've eliminated the guesswork. Our AI analyze thousands of reviews and performance data to match you with the perfect professional for your specific project.
+                </p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<div class="h-6 w-6 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<span class="font-semibold">Fully Background Checked Professionals</span>
+</li>
+<li class="flex items-center gap-3">
+<div class="h-6 w-6 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<span class="font-semibold">Transparent Upfront Pricing</span>
+</li>
+<li class="flex items-center gap-3">
+<div class="h-6 w-6 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<span class="font-semibold">Service Guarantee Insurance</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="bg-on-background py-24 overflow-hidden">
+<div class="max-w-7xl mx-auto px-8">
+<div class="text-center mb-20">
+<h2 class="text-white text-4xl font-headline font-extrabold mb-4">Loved by our Community</h2>
+<p class="text-on-surface-variant">See what people are saying about the LocalServe experience.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Testimonial 1 -->
+<div class="bg-white/5 backdrop-blur-md p-8 rounded-lg border border-white/10 relative">
+<span class="material-symbols-outlined text-primary text-5xl opacity-20 absolute top-4 right-4">format_quote</span>
+<div class="flex items-center gap-4 mb-6">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="portrait of a smiling woman in her 30s with soft natural lighting and blurred urban background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxrn67AWKVOLfsf-xPgQVSXnDVHjAJCgoosBsw86o1NqZtxfQf4MswuNs3QtX3i9eVY3mlyaXGHHxa2lq-zLpIiyaRJbzVo45MInECqtAw85tv2HhRNnlY22nlrRVxWaU-skXiONUwlQYE7Wq9cEIOL5lc67K9JY60_WG4l9FvrKa-V8wjlPSh6t68Ikx3ZzFyjhFd4YYFod7JQN7MC7PVOX_onGby5S3AeH7SG6jXttaFL83wzVPTD5X_mPm3b3rYIS1bEPgu2t5a"/>
+<div>
+<h4 class="text-white font-bold">Sarah Jenkins</h4>
+<p class="text-on-surface-variant text-sm">New York, NY</p>
+</div>
+</div>
+<p class="text-on-error leading-relaxed italic">
+                            "The AI recommendation was spot on. I found an electrician within minutes, and they arrived exactly when they said they would. Highly professional!"
+                        </p>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-white/10 backdrop-blur-md p-8 rounded-lg border border-white/10 transform scale-105 shadow-2xl z-10">
+<span class="material-symbols-outlined text-secondary text-5xl opacity-20 absolute top-4 right-4">format_quote</span>
+<div class="flex items-center gap-4 mb-6">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="close-up portrait of a professional man in a business casual shirt with warm golden hour lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsGYp62H4d_NvZWs8zOKT_ga5_eUN7ge30Rkr6zC-v_f3RHAHFRSt2p5qIazFZa0SVnu7PC60h0YFdPEGQAyBKhQsPA_UGrGuWp13Y0zSK3x_yeaYQxI07pkyXa3p_PdXV3VsYDJg4kCPRFASETu98nh4BsgmBSilNUfD8SbYN4pmdkbgJ5mGA4XgdtM_g1tDoKPwES8Sg0rvI2YtvNwybtVfbSffnRBIRbS86U-MvFxGCgfvoWmv4NuWfcVMzZ-RjXunroDDeQyzz"/>
+<div>
+<h4 class="text-white font-bold">David Chen</h4>
+<p class="text-on-surface-variant text-sm">San Francisco, CA</p>
+</div>
+</div>
+<p class="text-on-error leading-relaxed italic">
+                            "LocalServe is my go-to for home maintenance now. The quality of pros is significantly higher than other platforms I've used in the past."
+                        </p>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-white/5 backdrop-blur-md p-8 rounded-lg border border-white/10">
+<span class="material-symbols-outlined text-tertiary text-5xl opacity-20 absolute top-4 right-4">format_quote</span>
+<div class="flex items-center gap-4 mb-6">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="confident professional woman looking at camera with a slight smile and professional attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuYA5x_6QGgBGIhx34pmK8Ts07Sq5m14Dj-qwVCasenysCFNs26nA6blDaxpu6j3phswl12IcY-Vnu8WJ44RurESFMwvxta3QzeUZknrGneH2EtROjoOYQc0gqaz9nv0ws1z0EeeKwwsVBuDh4nbFaWOCc_uL1VwgXp5Ybis1XukamwfnueB7N7e02pwONu39CxzXiIZwHWHrpvjjkd9HJIXGc-GHOpJCMMniIndc3_jSj3Mx2N7Cvq92g1teafzVC6F4vJjeVq2fX"/>
+<div>
+<h4 class="text-white font-bold">Elena Rodriguez</h4>
+<p class="text-on-surface-variant text-sm">Chicago, IL</p>
+</div>
+</div>
+<p class="text-on-error leading-relaxed italic">
+                            "Booking a deep cleaning service was seamless. The tracking features and secure payment gave me total peace of mind. Excellent service!"
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Popular Services List -->
+<section class="max-w-7xl mx-auto px-8 py-24">
+<h2 class="text-3xl font-headline font-extrabold text-on-surface mb-12">Popular Services This Week</h2>
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-outline-variant/10">
+<div class="p-4 flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-dim">handyman</span>
+<span class="font-semibold text-on-surface">Furniture Assembly</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full group-hover:bg-primary group-hover:text-on-primary">From $45/hr</span>
+</div>
+<div class="p-4 flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">pest_control</span>
+<span class="font-semibold text-on-surface">Pest Control</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full group-hover:bg-primary group-hover:text-on-primary">Verified Experts</span>
+</div>
+<div class="p-4 flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary">ac_unit</span>
+<span class="font-semibold text-on-surface">AC Repair</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full group-hover:bg-primary group-hover:text-on-primary">Emergency Service</span>
+</div>
+<div class="p-4 flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-primary-container">home_health</span>
+<span class="font-semibold text-on-surface">Elderly Care</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full group-hover:bg-primary group-hover:text-on-primary">High Rated</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#eff1f3] dark:bg-slate-900 w-full py-12 px-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6 max-w-7xl mx-auto font-['Inter'] text-sm leading-relaxed">
+<div class="space-y-4 text-center md:text-left">
+<div class="text-lg font-bold text-[#4953ac]">LocalServe AI</div>
+<p class="text-[#595c5e] dark:text-slate-400 max-w-xs">Your intelligent companion for finding and booking the best local services.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-x-8 gap-y-4">
+<a class="text-[#595c5e] dark:text-slate-400 hover:underline decoration-2 underline-offset-4 opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="text-[#595c5e] dark:text-slate-400 hover:underline decoration-2 underline-offset-4 opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="text-[#595c5e] dark:text-slate-400 hover:underline decoration-2 underline-offset-4 opacity-80 hover:opacity-100" href="#">Help Center</a>
+<a class="text-[#595c5e] dark:text-slate-400 hover:underline decoration-2 underline-offset-4 opacity-80 hover:opacity-100" href="#">Career</a>
+</div>
+<div class="text-[#595c5e] dark:text-slate-400">
+                © 2024 LocalServe AI. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>

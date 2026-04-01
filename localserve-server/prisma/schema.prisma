@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  phone     String?
+  location  String?
+  role      String   @default("user") // "user" or "provider"
+  avatar    String?  @default("")
+  createdAt DateTime @default(now())
+
+  providerProfile ProviderProfile?
+  bookingsAsUser  Booking[]        @relation("UserBookings")
+  reviewsGiven    Review[]         @relation("UserReviews")
+  notifications   Notification[]   @relation("UserNotifications")
+}
+
+model ProviderProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  service       String   // e.g., "Home Cleaning"
+  serviceIcon   String   @default("handyman")
+  description   String   @default("Expert service provider.")
+  experience    String   @default("0 years")
+  basePrice     Int      @default(500)
+  distance      Float    @default(5.0)
+  available     Boolean  @default(true)
+  verified      Boolean  @default(false)
+  tags          String   @default("[]") // JSON string array of tags
+
+  servicesOffered ProviderService[]
+  bookings        Booking[]         @relation("ProviderBookings")
+  reviews         Review[]          @relation("ProviderReviews")
+}
+
+model ProviderService {
+  id                String          @id @default(uuid())
+  providerProfileId String
+  providerProfile   ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+  category          String
+  price             Int
+  experience        String          @default("0 years")
+  description       String          @db.Text
+  createdAt         DateTime        @default(now())
+}
+
+model Booking {
+  id                String          @id @default(uuid())
+  userId            String
+  user              User            @relation("UserBookings", fields: [userId], references: [id])
+  providerProfileId String
+  providerProfile   ProviderProfile @relation("ProviderBookings", fields: [providerProfileId], references: [id])
+  date              String          // e.g., "2026-04-05"
+  time              String
+  price             Int
+  notes             String?         @db.Text
+  status            String          @default("Upcoming") // "Upcoming", "Completed", "Cancelled"
+  confirmedAt       DateTime?       // To start the 5-min cancellation timer
+  createdAt         DateTime        @default(now())
+}
+
+model Review {
+  id                String          @id @default(uuid())
+  userId            String
+  user              User            @relation("UserReviews", fields: [userId], references: [id])
+  providerProfileId String
+  providerProfile   ProviderProfile @relation("ProviderReviews", fields: [providerProfileId], references: [id])
+  rating            Int
+  comment           String          @db.Text
+  createdAt         DateTime        @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation("UserNotifications", fields: [userId], references: [id])
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
