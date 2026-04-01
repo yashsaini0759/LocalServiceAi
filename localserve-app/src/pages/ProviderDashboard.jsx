@@ -3,6 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
 export default function ProviderDashboard() {
   const { user, token } = useAuth();
   const { providers, setProviders } = useApp();
@@ -41,7 +43,7 @@ export default function ProviderDashboard() {
 
   const fetchServices = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/providers/services", {
+      const res = await fetch(`${API_URL}/providers/services`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -59,7 +61,7 @@ export default function ProviderDashboard() {
   const handleSaveProfile = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/providers/profile", {
+      const res = await fetch(`${API_URL}/providers/profile`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ available: profile.available })
@@ -108,8 +110,8 @@ export default function ProviderDashboard() {
     try {
       const isEdit = !!editingId;
       const endpoint = isEdit 
-        ? `http://localhost:5000/api/providers/services/${editingId}`
-        : `http://localhost:5000/api/providers/services`;
+        ? `${API_URL}/providers/services/${editingId}`
+        : `${API_URL}/providers/services`;
         
       const res = await fetch(endpoint, {
         method: isEdit ? "PUT" : "POST",
@@ -129,7 +131,7 @@ export default function ProviderDashboard() {
   const deleteService = async (id) => {
     if(!window.confirm("Are you sure you want to delete this service?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/providers/services/${id}`, {
+      const res = await fetch(`${API_URL}/providers/services/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
