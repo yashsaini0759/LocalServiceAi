@@ -111,7 +111,7 @@ function JoinDropdown({ onClose }) {
 }
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { unreadCount } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
@@ -269,9 +269,38 @@ export default function Navbar() {
           )}
           {user && (
             <>
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-outline-variant/10 mb-1">
+                <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full object-cover bg-primary-container" />
+                <div>
+                  <p className="font-bold text-on-surface text-sm">{user.name}</p>
+                  <p className="text-xs text-on-surface-variant capitalize">{user.role}</p>
+                </div>
+              </div>
               <Link to={user?.role === "provider" ? "/provider-dashboard" : "/dashboard"} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
-                <span className="material-symbols-outlined text-primary">dashboard</span> Dashboard
+                <span className="material-symbols-outlined text-primary">dashboard</span> My Dashboard
               </Link>
+              <Link to="/dashboard?tab=bookings" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
+                <span className="material-symbols-outlined text-primary">calendar_month</span> My Bookings
+              </Link>
+              <Link to="/dashboard?tab=reviews" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
+                <span className="material-symbols-outlined text-primary">reviews</span> My Reviews
+              </Link>
+              {user.role === "user" && (
+                <Link to="/dashboard?tab=wishlist" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
+                  <span className="material-symbols-outlined text-primary">favorite</span> Wishlist
+                </Link>
+              )}
+              <Link to="/dashboard?tab=settings" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
+                <span className="material-symbols-outlined text-primary">settings</span> Settings
+              </Link>
+              <div className="border-t border-outline-variant/10 mt-1 pt-1">
+                <button
+                  onClick={() => { logout(); navigate("/"); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-error/10 font-semibold text-error text-left"
+                >
+                  <span className="material-symbols-outlined">logout</span> Logout
+                </button>
+              </div>
             </>
           )}
         </div>
