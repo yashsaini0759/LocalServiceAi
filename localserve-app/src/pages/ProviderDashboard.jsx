@@ -146,10 +146,17 @@ export default function ProviderDashboard() {
       <div className="bg-gradient-to-r from-primary/90 to-primary py-12 px-6 md:px-8 shadow-inner text-white">
         <div className="max-w-4xl mx-auto flex items-center gap-6">
           <img src={user.avatar} alt={user.name} className="w-20 h-20 rounded-full bg-surface-container border-4 border-white/30 shadow-lg object-cover" />
-          <div>
+          <div className="flex-1">
             <h1 className="text-2xl md:text-3xl font-headline font-extrabold tracking-tight">Provider Dashboard</h1>
             <p className="text-white/80 text-sm mt-1 font-medium">Manage your professional services and availability.</p>
           </div>
+          <button
+            onClick={() => navigate("/dashboard?tab=bookings")}
+            className="shrink-0 flex items-center gap-2 bg-white/20 hover:bg-white/30 border border-white/30 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-all"
+          >
+            <span className="material-symbols-outlined text-lg">calendar_month</span>
+            <span className="hidden sm:block">My Bookings</span>
+          </button>
         </div>
       </div>
 
