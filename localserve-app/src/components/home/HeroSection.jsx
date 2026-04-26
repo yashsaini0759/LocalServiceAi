@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { searchSuggestions, indianCities } from "../../data/mockData";
-
-const recentSearches = ["Electrician", "Home Cleaning", "AC Repair"];
+import { searchSuggestions } from "../../data/mockData";
+import { useApp } from "../../context/AppContext";
+import LocationAutocomplete from "../ui/LocationAutocomplete";
 
 export default function HeroSection() {
   const navigate = useNavigate();
+  const { recentSearches, userLocation, detectLocation } = useApp();
   const [serviceQuery, setServiceQuery] = useState("");
   const [location, setLocation] = useState("Mumbai, MH");
   const [suggestions, setSuggestions] = useState([]);
@@ -32,14 +33,9 @@ export default function HeroSection() {
     navigate(`/services?q=${encodeURIComponent(query)}&loc=${encodeURIComponent(location)}`);
   };
 
-  const useCurrentLocation = () => {
-    navigator.geolocation?.getCurrentPosition(
-      () => setLocation("Current Location"),
-      () => setLocation("Mumbai, MH")
-    );
-    setLocation("Detecting...");
-    setTimeout(() => setLocation("Current Location"), 1500);
-  };
+  // UserLocation logic is now handled in LocationAutocomplete, but if we need a direct ref we could keep it.
+  // We can remove the old useCurrentLocation since it's built into LocationAutocomplete.
+  // The location state still holds the current string query.
 
   const showDropdown = suggestions.length > 0 || (showRecent && recentSearches.length > 0);
 
@@ -74,14 +70,14 @@ export default function HeroSection() {
             {/* Location */}
             <div className="flex items-center px-4 py-3 gap-2 border-r border-outline-variant/20 min-w-0 shrink-0">
               <span className="material-symbols-outlined text-primary text-xl fill-icon">location_on</span>
-              <select
+              <LocationAutocomplete 
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="bg-transparent border-none text-sm font-semibold text-on-surface focus:outline-none cursor-pointer max-w-[120px]"
-              >
-                <option value="Current Location">📍 Current</option>
-                {indianCities.map((c) => <option key={c} value={c}>{c}</option>)}
-              </select>
+                onChange={setLocation}
+                placeholder="Where?"
+                hideIcon={true}
+                className="max-w-[140px]"
+                inputClassName="w-full bg-transparent border-none text-sm font-semibold text-on-surface focus:outline-none placeholder-on-surface-variant/70 cursor-pointer"
+              />
             </div>
 
             {/* Service Input */}
@@ -144,10 +140,7 @@ export default function HeroSection() {
                       <span className="text-sm text-on-surface">{s}</span>
                     </button>
                   ))}
-                  <button onMouseDown={useCurrentLocation} className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-tertiary/5 text-left border-t border-outline-variant/10">
-                    <span className="material-symbols-outlined text-tertiary text-lg">my_location</span>
-                    <span className="text-sm text-tertiary font-semibold">Use current location</span>
-                  </button>
+
                 </>
               )}
             </div>

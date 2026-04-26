@@ -111,7 +111,7 @@ function JoinDropdown({ onClose }) {
 }
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { unreadCount } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
@@ -148,9 +148,8 @@ export default function Navbar() {
   return (
     <header
       ref={ref}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/95 backdrop-blur-md shadow-sm" : "bg-surface"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-sm" : "bg-surface"
+        }`}
     >
       <nav className="flex justify-between items-center px-6 md:px-8 py-3 max-w-7xl mx-auto">
         {/* Logo */}
@@ -166,9 +165,8 @@ export default function Navbar() {
           <div className="relative">
             <button
               onClick={() => toggle("services")}
-              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                openDropdown === "services" ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-primary hover:bg-primary/5"
-              }`}
+              className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-semibold transition-all ${openDropdown === "services" ? "bg-primary/10 text-primary" : "text-on-surface-variant hover:text-primary hover:bg-primary/5"
+                }`}
             >
               Services
               <span className={`material-symbols-outlined text-sm transition-transform ${openDropdown === "services" ? "rotate-180" : ""}`}>expand_more</span>
@@ -269,38 +267,9 @@ export default function Navbar() {
           )}
           {user && (
             <>
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-outline-variant/10 mb-1">
-                <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full object-cover bg-primary-container" />
-                <div>
-                  <p className="font-bold text-on-surface text-sm">{user.name}</p>
-                  <p className="text-xs text-on-surface-variant capitalize">{user.role}</p>
-                </div>
-              </div>
               <Link to={user?.role === "provider" ? "/provider-dashboard" : "/dashboard"} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
-                <span className="material-symbols-outlined text-primary">dashboard</span> My Dashboard
+                <span className="material-symbols-outlined text-primary">dashboard</span> Dashboard
               </Link>
-              <Link to="/dashboard?tab=bookings" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
-                <span className="material-symbols-outlined text-primary">calendar_month</span> My Bookings
-              </Link>
-              <Link to="/dashboard?tab=reviews" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
-                <span className="material-symbols-outlined text-primary">reviews</span> My Reviews
-              </Link>
-              {user.role === "user" && (
-                <Link to="/dashboard?tab=wishlist" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
-                  <span className="material-symbols-outlined text-primary">favorite</span> Wishlist
-                </Link>
-              )}
-              <Link to="/dashboard?tab=settings" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-container-low font-semibold text-on-surface">
-                <span className="material-symbols-outlined text-primary">settings</span> Settings
-              </Link>
-              <div className="border-t border-outline-variant/10 mt-1 pt-1">
-                <button
-                  onClick={() => { logout(); navigate("/"); }}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-error/10 font-semibold text-error text-left"
-                >
-                  <span className="material-symbols-outlined">logout</span> Logout
-                </button>
-              </div>
             </>
           )}
         </div>

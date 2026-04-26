@@ -8,6 +8,7 @@ import ReviewCard from "../components/reviews/ReviewCard";
 import ReviewModal from "../components/reviews/ReviewModal";
 import BookingModal from "../components/booking/BookingModal";
 import EmptyState from "../components/ui/EmptyState";
+import LocationAutocomplete from "../components/ui/LocationAutocomplete";
 
 const STATUS_STYLE = {
   Upcoming: "bg-primary/10 text-primary",
@@ -148,12 +149,16 @@ function BookingCard({ booking, onReview, onUpdateStatus, role }) {
 }
 
 export default function DashboardPage() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateProfile } = useAuth();
   const { providers, bookings, updateBookingStatus, reviews, wishlist, toggleWishlist, recentlyViewed } = useApp();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [activeTab, setActiveTab] = useState(params.get("tab") || "bookings");
   const [reviewTarget, setReviewTarget] = useState(null);
+
+  const [activeEditField, setActiveEditField] = useState(null);
+  const [editValue, setEditValue] = useState("");
+  const [savingProfile, setSavingProfile] = useState(false);
 
   if (!user) {
     return (
@@ -184,6 +189,13 @@ export default function DashboardPage() {
     ...(user.role === "user" ? [{ key: "recent", label: "Recently Viewed", icon: "history" }] : []),
     { key: "settings", label: "Settings", icon: "settings" },
   ];
+
+  const handleSaveProfile = async (fieldKey) => {
+    setSavingProfile(true);
+    await updateProfile({ [fieldKey]: editValue });
+    setActiveEditField(null);
+    setSavingProfile(false);
+  };
 
   return (
     <div className="min-h-screen bg-background pt-20">
@@ -395,27 +407,80 @@ export default function DashboardPage() {
               <h2 className="font-bold text-on-surface text-lg">Account Settings</h2>
               <div className="bg-white rounded-2xl border border-outline-variant/10 divide-y divide-outline-variant/10">
                 {[
-                  { label: "Full Name", value: user.name, icon: "person" },
-                  { label: "Email", value: user.email, icon: "email" },
-                  { label: "Phone", value: user.phone || "Not set", icon: "phone" },
-                  { label: "Location", value: user.location || "Not set", icon: "location_on" },
-                  { label: "Role", value: user.role === "provider" ? "Service Provider" : "User", icon: "badge" },
+                  { label: "Full Name", key: "name", value: user.name, icon: "person", editable: true },
+                  { label: "Email", key: "email", value: user.email, icon: "email", editable: true },
+                  { label: "Phone", key: "phone", value: user.phone || "Not set", icon: "phone", editable: true },
+                  { label: "Location", key: "location", value: user.location || "Not set", icon: "location_on", editable: true },
+                  { label: "Role", key: "role", value: user.role === "provider" ? "Service Provider" : "User", icon: "badge", editable: false },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center justify-between px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-primary">{item.icon}</span>
-                      <div>
-                        <p className="text-xs text-on-surface-variant">{item.label}</p>
-                        <p className="font-semibold text-on-surface text-sm">{item.value}</p>
+                  <div key={item.label} className="flex items-center justify-between px-5 py-4 min-h-[72px]">
+                    <div className="flex items-center gap-3 flex-1 min-w-0 pr-4">
+                      <span className={`material-symbols-outlined ${activeEditField === item.key ? "text-primary mt-1 self-start" : "text-primary"}`}>{item.icon}</span>
+                      <div className="flex-1 w-full min-w-0">
+                        <p className="text-xs text-on-surface-variant font-medium mb-0.5">{item.label}</p>
+                        
+                        {activeEditField === item.key ? (
+                          <div className="w-full relative z-10 mt-1">
+                            {item.key === "location" ? (
+                              <LocationAutocomplete 
+                                value={editValue} 
+                                onChange={setEditValue} 
+                                className="w-full sm:w-[350px]" 
+                              />
+                            ) : (
+                              <input 
+                                type={item.key === "email" ? "email" : "text"}
+                                value={editValue}
+                                onChange={(e) => setEditValue(e.target.value)}
+                                autoFocus
+                                className="w-full sm:w-[350px] bg-white border border-primary/40 focus:border-primary shadow-sm text-sm text-on-surface font-semibold px-3 py-2.5 rounded-lg focus:outline-none transition-all"
+                              />
+                            )}
+                          </div>
+                        ) : (
+                          <p className="font-semibold text-on-surface text-sm truncate">{item.value}</p>
+                        )}
                       </div>
                     </div>
-                    <button className="text-primary text-xs font-semibold hover:underline">Edit</button>
+                    
+                    {item.editable && (
+                      <div className="shrink-0 flex items-center">
+                        {activeEditField === item.key ? (
+                          <div className="flex items-center gap-2">
+                            <button 
+                              onClick={() => setActiveEditField(null)} 
+                              className="text-on-surface-variant text-xs font-semibold hover:text-on-surface px-2 py-1 rounded"
+                              disabled={savingProfile}
+                            >
+                              Cancel
+                            </button>
+                            <button 
+                              onClick={() => handleSaveProfile(item.key)} 
+                              className="bg-primary text-on-primary text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-primary-dim shadow-sm flex items-center gap-1"
+                              disabled={savingProfile}
+                            >
+                              {savingProfile ? "Saving..." : "Save"}
+                            </button>
+                          </div>
+                        ) : (
+                          <button 
+                            onClick={() => {
+                              setEditValue(item.value === "Not set" ? "" : item.value);
+                              setActiveEditField(item.key);
+                            }} 
+                            className="text-primary text-xs font-bold hover:underline py-1 px-2 -mr-2"
+                          >
+                            Edit
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
               <button
                 onClick={() => { logout(); navigate("/"); }}
-                className="w-full py-3 rounded-xl border border-error/30 text-error font-bold text-sm hover:bg-error/5 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl border border-error/30 text-error font-bold text-sm hover:bg-error/5 transition-colors flex items-center justify-center gap-2 mt-8"
               >
                 <span className="material-symbols-outlined">logout</span> Logout
               </button>

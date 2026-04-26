@@ -121,6 +121,31 @@ app.get('/api/auth/me', authMiddleware, async (req, res) => {
   }
 });
 
+// Update Current User
+app.put('/api/auth/profile', authMiddleware, async (req, res) => {
+  try {
+    const { name, email, phone, location } = req.body;
+    
+    // Optional: add email uniqueness check if changing email
+    
+    const updatedUser = await prisma.user.update({
+      where: { id: req.user.id },
+      data: {
+        name,
+        email,
+        phone,
+        location
+      }
+    });
+
+    const { password: _, ...safeUser } = updatedUser;
+    res.json({ user: safeUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
 
 // ==========================================
 // PROVIDER ROUTES
@@ -518,8 +543,138 @@ app.post('/api/reviews', authMiddleware, async (req, res) => {
   }
 });
 
+// ==========================================
+// AFFINITY LOGGING
+// ==========================================
+
+app.post('/api/affinity', authMiddleware, async (req, res) => {
+  try {
+    const { eventType, category, weight } = req.body;
+    if (!category || !eventType) return res.status(400).json({ error: "Missing fields" });
+    await prisma.userAffinityLog.create({
+      data: { userId: req.user.id, eventType, category: category.toLowerCase().trim(), weight: weight || 1.0 }
+    });
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: "Failed to log affinity" }); }
+});
+
+// ==========================================
+// AI RECOMMENDATION ENGINE (Native Prisma)
+// ==========================================
+
+app.get('/api/recommendations', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const limit = parseInt(req.query.limit) || 20;
+    // The frontend sends its categoryStack as ?stack=cat1,cat2,...
+    const clientStack = req.query.stack ? req.query.stack.split(',').map(c => c.toLowerCase().trim()) : [];
+
+    // 1. If client sent a stack, use it. Otherwise fall back to DB affinity.
+    let topCategories = clientStack;
+
+    if (topCategories.length === 0) {
+      const topCategoriesData = await prisma.userAffinityLog.groupBy({
+        by: ['category'],
+        where: { userId },
+        _sum: { weight: true },
+        orderBy: { _sum: { weight: 'desc' } },
+        take: 5
+      });
+      topCategories = topCategoriesData.map(c => c.category);
+    }
+
+    // 2. Fetch ALL available providers
+    const all = await prisma.providerProfile.findMany({
+      where: { available: true },
+      include: {
+        user: { select: { name: true, avatar: true } },
+        reviews: { select: { rating: true } },
+        servicesOffered: true,
+      }
+    });
+
+    // 3. Score each provider by stack position (lower index = higher priority)
+    const scored = all.map(p => {
+      const avgRating = p.reviews.length
+        ? parseFloat((p.reviews.reduce((a, b) => a + b.rating, 0) / p.reviews.length).toFixed(1))
+        : 5.0;
+
+      const cats = [
+        p.service?.toLowerCase(),
+        ...(p.servicesOffered?.map(s => s.category.toLowerCase()) || [])
+      ].filter(Boolean);
+
+      // Find best (lowest) position in the stack
+      let bestIdx = Infinity;
+      cats.forEach(cat => {
+        const idx = topCategories.indexOf(cat);
+        if (idx !== -1 && idx < bestIdx) bestIdx = idx;
+      });
+
+      const isMatch = bestIdx !== Infinity;
+      const matchCat = isMatch ? topCategories[bestIdx] : null;
+
+      return {
+        id: p.id,
+        userId: p.userId,
+        name: p.user.name,
+        avatar: p.user.avatar,
+        service: p.service,
+        serviceIcon: p.serviceIcon,
+        description: p.description,
+        experience: p.experience,
+        price: p.basePrice,
+        distance: p.distance,
+        available: p.available,
+        verified: p.verified,
+        tags: JSON.parse(p.tags || "[]"),
+        rating: avgRating,
+        reviews: p.reviews.length,
+        servicesOffered: p.servicesOffered,
+        aiScore: isMatch ? Math.max(0, 100 - bestIdx * 10) : 0,
+        matchReasons: isMatch ? [`Based on your interest in ${matchCat}`] : [],
+        _stackIdx: bestIdx  // used for sort only
+      };
+    });
+
+    // 4. Sort: stack matches first (by position), then by rating
+    scored.sort((a, b) => {
+      if (a._stackIdx !== b._stackIdx) return a._stackIdx - b._stackIdx;
+      return b.rating - a.rating;
+    });
+
+    const result = scored.slice(0, limit).map(p => { delete p._stackIdx; return p; });
+    res.json(result);
+  } catch (err) {
+    console.error("[Recommendations Error]", err);
+    res.status(500).json({ error: "Failed to generate recommendations." });
+  }
+});
+
+
+// ==========================================
+// SEMANTIC SEARCH ROUTE (Proxied to Python)
+// ==========================================
+
+app.get('/api/search/semantic', async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (!q) return res.json([]);
+    
+    // Proxy to Python Microservice
+    const response = await fetch(`http://localhost:8000/search/semantic?q=${encodeURIComponent(q)}`);
+    if (!response.ok) throw new Error("Python backend failed");
+    
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error("[Semantic API Proxy Error]", err);
+    res.status(500).json({ error: "Semantic search proxy failed." });
+  }
+});
+
 // START SERVER
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

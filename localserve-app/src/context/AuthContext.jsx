@@ -70,13 +70,33 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const updateProfile = async (userData) => {
+    try {
+      const res = await fetch(`${API_URL}/auth/profile`, {
+        method: "PUT",
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(userData)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      
+      setUser(data.user);
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  };
+
   const logout = () => {
     setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, token, signup, login, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
